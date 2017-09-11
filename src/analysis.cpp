@@ -3,6 +3,8 @@
 //
 // simple utility to process log files from fact/fiction SS experiment
 //
+// need to run this once per log file
+//
 // PEB (pbaxter@lincoln.ac.uk) - 06/09/17
 //
 
@@ -53,7 +55,7 @@ int main (int argc, char **argv)
     inFile.exceptions(std::ios::failbit);	//enable exception throwing
     try
     {
-        fileName = "data/" + fileName;
+        //fileName = "data/" + fileName;
         //cout << fileName << endl;
     	inFile.open(fileName.c_str(), ios::in);
         getline(inFile, readIn);
@@ -141,6 +143,9 @@ int main (int argc, char **argv)
     cout << "Correctness in first four stories: \t" << correctnessTrain << endl;
     cout << "Correctness in rest of stories: \t" << correctnessTest << endl;
     cout << "Correctness in all stories: \t\t" << correctnessAll << endl;
+    cout << endl;
+
+    cout << "DONE" << endl;
     cout << endl;
 
     return 0;
