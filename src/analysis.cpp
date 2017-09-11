@@ -149,7 +149,7 @@ int main (int argc, char **argv)
     // PUT RESULTS INTO RESULTS FILE
     //////////////////////////
 
-    string resultsFileName = "results/results.dat";
+    string resultsFileName = "results.dat";
     ofstream resultsFile;
 
     resultsFile.exceptions(std::ios::failbit);	//enable exception throwing
