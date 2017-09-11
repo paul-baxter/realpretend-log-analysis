@@ -5,8 +5,15 @@
 #include <vector>
 #include <sstream>
 #include <stdlib.h>
+#include <fstream>
 
 using namespace std;
+
+bool fileExists (const string filename)
+{
+    ifstream ifile(filename.c_str());
+    return (bool)ifile;
+}
 
 float StoF (string in)
 {

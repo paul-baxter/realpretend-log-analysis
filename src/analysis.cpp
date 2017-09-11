@@ -64,7 +64,7 @@ int main (int argc, char **argv)
     }
     catch (std::ios_base::failure &fail)
     {
-    	std::cout << "error: problem with file: " << fail.what() << std::endl;
+    	std::cout << "error: problem with input file: " << fail.what() << std::endl;
     }
     inFile.exceptions(std::ios::goodbit);	//disable exception throwing
 
@@ -128,7 +128,7 @@ int main (int argc, char **argv)
     inFile.close();
 
     //////////////////////////
-    // DO THE ANALYSIS AND PUT INTO RESULTS FILE
+    // DO THE ANALYSIS
     //////////////////////////
 
     float correctnessAll = Correctness(correctAll);
@@ -144,6 +144,50 @@ int main (int argc, char **argv)
     cout << "Correctness in rest of stories: \t" << correctnessTest << endl;
     cout << "Correctness in all stories: \t\t" << correctnessAll << endl;
     cout << endl;
+
+    //////////////////////////
+    // PUT RESULTS INTO RESULTS FILE
+    //////////////////////////
+
+    string resultsFileName = "results/results.dat";
+    ofstream resultsFile;
+
+    resultsFile.exceptions(std::ios::failbit);	//enable exception throwing
+    try
+    {
+        if (!fileExists(resultsFileName))
+        {
+            //if the file doesn't exist, then open, and write header
+            cout << "Opening new file for results..." << endl;
+            resultsFile.open(resultsFileName.c_str(), ios::out);
+            resultsFile << "ID,TrainCorrect,TestCorrect,AllCorrect,TimeMeanTrain,TimeSDTrain,TimeMeanTest,TimeSDTest,TimeMeanAll,TimeSDAll" << endl;
+            resultsFile.flush();
+        }
+        else
+        {
+            //if the file does exist, then open in append mode, so can add to it
+            cout << "Results file already exists, appending results to it..." << endl;
+            resultsFile.open(resultsFileName.c_str(), ios::app);
+        }
+    }
+    catch (std::ios_base::failure &fail)
+    {
+        std::cout << "error: problem with results file: " << fail.what() << std::endl;
+    }
+    resultsFile.exceptions(std::ios::goodbit);	//disable exception throwing
+
+    resultsFile << participantID << ",";
+    resultsFile << correctnessTrain << ",";
+    resultsFile << correctnessTest << ",";
+    resultsFile << correctnessAll << ",";
+    resultsFile << Mean(timingTrain) << "," << SD(timingTrain) << ",";
+    resultsFile << Mean(timingTest) << "," << SD(timingTest) << ",";
+    resultsFile << Mean(timingAll) << "," << SD(timingAll);
+    resultsFile << endl;
+
+    resultsFile.flush();
+    resultsFile.close();
+
 
     cout << "DONE" << endl;
     cout << endl;
