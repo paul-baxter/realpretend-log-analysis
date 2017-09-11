@@ -6,7 +6,7 @@ echo ""
 # look for contents of /data...
 for entry in data/*.dat
 do
-    echo "$entry"
+    #echo "$entry"
     ./LogAnalysis "$entry"
 done
 echo "All Done"

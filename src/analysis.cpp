@@ -135,15 +135,15 @@ int main (int argc, char **argv)
     float correctnessTrain = Correctness(correctTrain);
     float correctnessTest = Correctness(correctTest);
 
-    cout << endl;
-    cout << "Mean time of first four: \t" + Mean(timingTrain) + "\tSD: " + SD(timingTrain) << endl;
-    cout << "Mean time of rest of stories: \t" + Mean(timingTest) + "\tSD: " + SD(timingTest) << endl;
-    cout << "Mean time over all stories: \t" + Mean(timingAll) + "\tSD: " + SD(timingAll) << endl;
-    cout << endl;
-    cout << "Correctness in first four stories: \t" << correctnessTrain << endl;
-    cout << "Correctness in rest of stories: \t" << correctnessTest << endl;
-    cout << "Correctness in all stories: \t\t" << correctnessAll << endl;
-    cout << endl;
+    // cout << endl;
+    // cout << "Mean time of first four: \t" + Mean(timingTrain) + "\tSD: " + SD(timingTrain) << endl;
+    // cout << "Mean time of rest of stories: \t" + Mean(timingTest) + "\tSD: " + SD(timingTest) << endl;
+    // cout << "Mean time over all stories: \t" + Mean(timingAll) + "\tSD: " + SD(timingAll) << endl;
+    // cout << endl;
+    // cout << "Correctness in first four stories: \t" << correctnessTrain << endl;
+    // cout << "Correctness in rest of stories: \t" << correctnessTest << endl;
+    // cout << "Correctness in all stories: \t\t" << correctnessAll << endl;
+    // cout << endl;
 
     //////////////////////////
     // PUT RESULTS INTO RESULTS FILE
