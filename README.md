@@ -2,7 +2,7 @@
 
 Basic utlity to parse and analyse log files from "fact/fiction" summer scientist experiment.
 
-To run (using cmake, from top level):
+To compile (using cmake, from top level):
 
 ** $ mkdir build && cd build
 
@@ -10,7 +10,9 @@ To run (using cmake, from top level):
 
 ** $ rm -r build
 
-** $ ./LogAnalysis <logFile>
 
+To run (assuming log files are in /data):
 
-20808815
+** $ ./analysis.sh
+
+** This will create a data file results.dat in top level
