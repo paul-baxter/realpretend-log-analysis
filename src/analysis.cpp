@@ -31,6 +31,7 @@ int main (int argc, char **argv)
     std::string readIn;
 
     //results containers
+    int score;
     string participantID;
     vector<string> timingAll;        //reaction times of all stories
     vector<string> timingTrain;      //reaction times of first four stories
@@ -98,11 +99,17 @@ int main (int argc, char **argv)
     }
 
     //rest of the stories now
+    score = 0;
     while (getline(inFile, readIn))
     {
         //read until end: each line is now data
     	//std::cout << readIn << std::endl;
         vector<string> s = Splitter(readIn, ',');
+        //update score
+        if (s[1] == "1")
+        {
+            score += 1; //increment score in line with Corriveau 2009...
+        }
         //timings
         timingAll.push_back(s[3]);
         timingTest.push_back(s[3]);
@@ -160,7 +167,7 @@ int main (int argc, char **argv)
             //if the file doesn't exist, then open, and write header
             cout << "Opening new file for results..." << endl;
             resultsFile.open(resultsFileName.c_str(), ios::out);
-            resultsFile << "ID,TrainCorrect,TestCorrect,AllCorrect,TimeMeanTrain,TimeSDTrain,TimeMeanTest,TimeSDTest,TimeMeanAll,TimeSDAll" << endl;
+            resultsFile << "ID,TrainCorrect,TestCorrect,AllCorrect,TimeMeanTrain,TimeSDTrain,TimeMeanTest,TimeSDTest,TimeMeanAll,TimeSDAll, testScore, story 1, story 2, story 3, story 4, story 5, story 6, story 7, story 8, story 9, story 10, story 11, story 12, story 13, story 14, story 15, story 16" << endl;
             resultsFile.flush();
         }
         else
@@ -182,7 +189,17 @@ int main (int argc, char **argv)
     resultsFile << correctnessAll << ",";
     resultsFile << Mean(timingTrain) << "," << SD(timingTrain) << ",";
     resultsFile << Mean(timingTest) << "," << SD(timingTest) << ",";
-    resultsFile << Mean(timingAll) << "," << SD(timingAll);
+    resultsFile << Mean(timingAll) << "," << SD(timingAll) << ",";
+    resultsFile << score << ",";
+    //now the individual stories
+    for (int a = 0; a < (int)correctAll.size(); a++)
+    {
+        resultsFile << correctAll[a];
+        if (a != ((int)correctAll.size() - 1))
+        {
+            resultsFile << ",";
+        }
+    }
     resultsFile << endl;
 
     resultsFile.flush();
