@@ -36,14 +36,14 @@ int main (int argc, char **argv)
     int score;
     string participantID;
     string condition;
-    vector<string> timingAll;        //reaction times of all stories
-    vector<string> timingTrain;      //reaction times of first four stories
-    vector<string> timingTest;       //reaction times of rest of stories
-    vector<float> correctAll;       //correctness of all stories
-    vector<float> correctTrain;       //correctness of first four stories
-    vector<float> correctTest;       //correctness of rest of stories
+    vector<string> timingAll;        //reaction times of all stories, in order of presentation
+    vector<string> timingTrain;      //reaction times of first four stories, in order of presentation
+    vector<string> timingTest;       //reaction times of rest of stories, in order of presentation
+    vector<float> correctAll;       //correctness of all stories, in order of presentation
+    vector<float> correctTrain;       //correctness of first four stories, in order of presentation
+    vector<float> correctTest;       //correctness of rest of stories, in order of presentation
     vector<string> storyCorrectness(16);    //for each story, is it correct or not?
-    vector<string> storyOrderCorrect;   //in the order of presentation, story correctness
+    vector<string> storyReaction(16);       //for each story, what was the reaction time?
     string startTime;
     string duration;
 
@@ -97,6 +97,7 @@ int main (int argc, char **argv)
         //timings
         timingAll.push_back(s[3]);
         timingTrain.push_back(s[3]);
+        storyReaction[(int)StoF(s[4])] = s[3];
         //correctness
         if (answers[(int)StoF(s[4])] == s[1])
         {
@@ -138,6 +139,7 @@ int main (int argc, char **argv)
             //timings
             timingAll.push_back(s[3]);
             timingTest.push_back(s[3]);
+            storyReaction[(int)StoF(s[4])] = s[3];
             //correctness
             if (answers[(int)StoF(s[4])] == s[1])
             {
@@ -199,7 +201,7 @@ int main (int argc, char **argv)
             //if the file doesn't exist, then open, and write header
             cout << "Opening new file for results..." << endl;
             resultsFile.open(resultsFileName.c_str(), ios::out);
-            resultsFile << "ID,condition,TrainCorrect,TestCorrect,AllCorrect,TimeMeanTrain,TimeSDTrain,TimeMeanTest,TimeSDTest,TimeMeanAll,TimeSDAll,duration,testScore,story 1,story 2,story 3,story 4,story 5,story 6,story 7,story 8,story 9,story 10,story 11,story 12,story 13,story 14,story 15,story 16" << endl;
+            resultsFile << "ID,condition,TrainCorrect,TestCorrect,AllCorrect,TimeMeanTrain,TimeSDTrain,TimeMeanTest,TimeSDTest,TimeMeanAll,TimeSDAll,duration,testScore,story correctness,story 1,story 2,story 3,story 4,story 5,story 6,story 7,story 8,story 9,story 10,story 11,story 12,story 13,story 14,story 15,story 16,story presentation order,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,story timings,story 1,story 2,story 3,story 4,story 5,story 6,story 7,story 8,story 9,story 10,story 11,story 12,story 13,story 14,story 15,story 16,timings presentation order,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16," << endl;
             resultsFile.flush();
         }
         else
@@ -225,15 +227,31 @@ int main (int argc, char **argv)
     resultsFile << Mean(timingAll) << "," << SD(timingAll) << ",";
     resultsFile << duration << ",",
     resultsFile << score << ",";
-    //now the individual stories
+    resultsFile << ",";
+    //the actual story correctness (*not* in order of presentation)
+    for (int a = 0; a < (int)storyCorrectness.size(); a++)
+    {
+        resultsFile << storyCorrectness[a] << ",";
+    }
+    resultsFile << ",";
+    //now the individual stories in order of presentation
     for (int a = 0; a < (int)correctAll.size(); a++)
     {
-        resultsFile << correctAll[a];
-        if (a != ((int)correctAll.size() - 1))
-        {
-            resultsFile << ",";
-        }
+        resultsFile << correctAll[a] << ",";
     }
+    resultsFile << ",";
+    //now reaction times per story (*not* in order of presentation)
+    for (int a = 0; a < (int)storyReaction.size(); a++)
+    {
+        resultsFile << storyReaction[a] << ",";
+    }
+    resultsFile << ",";
+    //now reaction times in order of presentation
+    for (int a = 0; a < (int)timingAll.size(); a++)
+    {
+        resultsFile << timingAll[a] << ",";
+    }
+
     resultsFile << endl;
 
     resultsFile.flush();
