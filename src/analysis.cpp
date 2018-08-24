@@ -34,16 +34,19 @@ int main (int argc, char **argv)
 
     //results containers
     int score;
+    int switchYears = 0;                //if 2018 data, then set this to 1... 0 for 2017
     string participantID;
-    string condition;
+    string condition;               //experimental condition: 0: congruent, 1: incongruent
     vector<string> timingAll;        //reaction times of all stories, in order of presentation
     vector<string> timingTrain;      //reaction times of first four stories, in order of presentation
     vector<string> timingTest;       //reaction times of rest of stories, in order of presentation
     vector<float> correctAll;       //correctness of all stories, in order of presentation
     vector<float> correctTrain;       //correctness of first four stories, in order of presentation
     vector<float> correctTest;       //correctness of rest of stories, in order of presentation
+    vector<float> cueAgreement;     //agreement with robot gaze cue, in order of presentation
     vector<string> storyCorrectness(16);    //for each story, is it correct or not?
     vector<string> storyReaction(16);       //for each story, what was the reaction time?
+    vector<string> robotAgreement(16);      //for each story, did participant agree with robot gaze cue?
     string startTime;
     string duration;
 
@@ -67,9 +70,19 @@ int main (int argc, char **argv)
     	inFile.open(fileName.c_str(), ios::in);
         getline(inFile, readIn);
         vector<string> id = Splitter(readIn, ',');
-        cout << "PARTICIPANT: " + id[0] << endl;
-        participantID = id[0];
-        condition = id[1];
+        if (id.size() == 1)
+        {
+            switchYears = 0;
+            cout << "PARTICIPANT: " + id[0] << endl;
+            participantID = id[0];
+        }
+        else if (id.size() == 2)
+        {
+            switchYears = 0;
+            cout << "PARTICIPANT: " + id[0] << endl;
+            participantID = id[0];
+            condition = id[1];
+        }
     }
     catch (std::ios_base::failure &fail)
     {
@@ -112,6 +125,20 @@ int main (int argc, char **argv)
             correctTrain.push_back(0.0f);
             correctAll.push_back(0.0f);
             storyCorrectness[(int)StoF(s[4])] = "0";
+        }
+        //gaze cue agreement
+        if (condition == "0")
+        {
+            //congruent condition - gaze cue always correct
+        }
+        else if (condition == "1")
+        {
+            //incongruent condition - gaze cue always wrong
+        }
+        else
+        {
+            //something wrong - no such condition
+            cout << "ERROR: no such condition - " << condition << endl;
         }
     }
 
