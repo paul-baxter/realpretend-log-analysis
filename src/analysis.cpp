@@ -1,11 +1,13 @@
 //
-// Summer Scientist 2017 Log File Analysis
+// Summer Scientist Log File Analysis
 //
 // simple utility to process log files from fact/fiction SS experiment
 //
 // need to run this once per log file
 //
 // PEB (pbaxter@lincoln.ac.uk) - 06/09/17
+//
+// Update 08/2018: updated to process logs from Summer Scientist 2018 study
 //
 
 #include <iostream>
