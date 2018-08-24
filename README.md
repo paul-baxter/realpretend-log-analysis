@@ -8,6 +8,8 @@ To compile (using cmake, from top level):
 
 ** $ mkdir build && cd build
 
+** $ cmake ..
+
 ** $ make && cd ..
 
 ** $ rm -r build
