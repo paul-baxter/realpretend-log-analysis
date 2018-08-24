@@ -80,7 +80,7 @@ int main (int argc, char **argv)
         }
         else if (id.size() == 2)
         {
-            switchYears = 0;
+            switchYears = 1;
             cout << "PARTICIPANT: " + id[0] << "\t";
             participantID = id[0];
             condition = id[1];
@@ -130,46 +130,49 @@ int main (int argc, char **argv)
             storyCorrectness[(int)StoF(s[4])] = "0";
         }
         //gaze cue agreement
-        if (condition == "0")
+        if (switchYears == 1)
         {
-            //congruent condition - gaze cue always correct
-            if(answers[(int)StoF(s[4])] == s[1])
+            if (condition == "0")
             {
-                //answer given matches robot cue
-                cueAgreement.push_back(1.0f);
-                cueAgreementTrain.push_back(1.0f);
-                robotAgreement[(int)StoF(s[4])] = "1";
+                //congruent condition - gaze cue always correct
+                if(answers[(int)StoF(s[4])] == s[1])
+                {
+                    //answer given matches robot cue
+                    cueAgreement.push_back(1.0f);
+                    cueAgreementTrain.push_back(1.0f);
+                    robotAgreement[(int)StoF(s[4])] = "1";
+                }
+                else
+                {
+                    //answer given does not match robot cue
+                    cueAgreement.push_back(0.0f);
+                    cueAgreementTrain.push_back(0.0f);
+                    robotAgreement[(int)StoF(s[4])] = "0";
+                }
+            }
+            else if (condition == "1")
+            {
+                //incongruent condition - gaze cue always wrong
+                if(answers[(int)StoF(s[4])] != s[1])
+                {
+                    //answer given matches robot cue
+                    cueAgreement.push_back(1.0f);
+                    cueAgreementTrain.push_back(1.0f);
+                    robotAgreement[(int)StoF(s[4])] = "1";
+                }
+                else
+                {
+                    //answer given does not match robot cue
+                    cueAgreement.push_back(0.0f);
+                    cueAgreementTrain.push_back(0.0f);
+                    robotAgreement[(int)StoF(s[4])] = "0";
+                }
             }
             else
             {
-                //answer given does not match robot cue
-                cueAgreement.push_back(0.0f);
-                cueAgreementTrain.push_back(0.0f);
-                robotAgreement[(int)StoF(s[4])] = "0";
+                //something wrong - no such condition
+                cout << "ERROR: no such condition - " << condition << endl;
             }
-        }
-        else if (condition == "1")
-        {
-            //incongruent condition - gaze cue always wrong
-            if(answers[(int)StoF(s[4])] != s[1])
-            {
-                //answer given matches robot cue
-                cueAgreement.push_back(1.0f);
-                cueAgreementTrain.push_back(1.0f);
-                robotAgreement[(int)StoF(s[4])] = "1";
-            }
-            else
-            {
-                //answer given does not match robot cue
-                cueAgreement.push_back(0.0f);
-                cueAgreementTrain.push_back(0.0f);
-                robotAgreement[(int)StoF(s[4])] = "0";
-            }
-        }
-        else
-        {
-            //something wrong - no such condition
-            cout << "ERROR: no such condition - " << condition << endl;
         }
     }
 
@@ -181,7 +184,7 @@ int main (int argc, char **argv)
     	//std::cout << readIn << std::endl;
         vector<string> s = Splitter(readIn, ',');
 
-        if ((s[0] == "data") && (s.size() == 6))
+        if (s[0] == "data")
         {
             //update score
             if (s[1] == "1")
@@ -214,46 +217,49 @@ int main (int argc, char **argv)
                 storyCorrectness[(int)StoF(s[4])] = "0";
             }
             //gaze cue agreement
-            if (condition == "0")
+            if (switchYears == 1)
             {
-                //congruent condition - gaze cue always correct
-                if(answers[(int)StoF(s[4])] == s[1])
+                if (condition == "0")
                 {
-                    //answer given matches robot cue
-                    cueAgreement.push_back(1.0f);
-                    cueAgreementTest.push_back(1.0f);
-                    robotAgreement[(int)StoF(s[4])] = "1";
+                    //congruent condition - gaze cue always correct
+                    if(answers[(int)StoF(s[4])] == s[1])
+                    {
+                        //answer given matches robot cue
+                        cueAgreement.push_back(1.0f);
+                        cueAgreementTest.push_back(1.0f);
+                        robotAgreement[(int)StoF(s[4])] = "1";
+                    }
+                    else
+                    {
+                        //answer given does not match robot cue
+                        cueAgreement.push_back(0.0f);
+                        cueAgreementTest.push_back(0.0f);
+                        robotAgreement[(int)StoF(s[4])] = "0";
+                    }
+                }
+                else if (condition == "1")
+                {
+                    //incongruent condition - gaze cue always wrong
+                    if(answers[(int)StoF(s[4])] != s[1])
+                    {
+                        //answer given matches robot cue
+                        cueAgreement.push_back(1.0f);
+                        cueAgreementTest.push_back(1.0f);
+                        robotAgreement[(int)StoF(s[4])] = "1";
+                    }
+                    else
+                    {
+                        //answer given does not match robot cue
+                        cueAgreement.push_back(0.0f);
+                        cueAgreementTest.push_back(0.0f);
+                        robotAgreement[(int)StoF(s[4])] = "0";
+                    }
                 }
                 else
                 {
-                    //answer given does not match robot cue
-                    cueAgreement.push_back(0.0f);
-                    cueAgreementTest.push_back(0.0f);
-                    robotAgreement[(int)StoF(s[4])] = "0";
+                    //something wrong - no such condition
+                    cout << "ERROR: no such condition - " << condition << endl;
                 }
-            }
-            else if (condition == "1")
-            {
-                //incongruent condition - gaze cue always wrong
-                if(answers[(int)StoF(s[4])] != s[1])
-                {
-                    //answer given matches robot cue
-                    cueAgreement.push_back(1.0f);
-                    cueAgreementTest.push_back(1.0f);
-                    robotAgreement[(int)StoF(s[4])] = "1";
-                }
-                else
-                {
-                    //answer given does not match robot cue
-                    cueAgreement.push_back(0.0f);
-                    cueAgreementTest.push_back(0.0f);
-                    robotAgreement[(int)StoF(s[4])] = "0";
-                }
-            }
-            else
-            {
-                //something wrong - no such condition
-                cout << "ERROR: no such condition - " << condition << endl;
             }
         }
 
@@ -278,6 +284,33 @@ int main (int argc, char **argv)
     float agreementAll = Correctness(cueAgreement);
     float agreementTrain = Correctness(cueAgreementTrain);
     float agreementTest = Correctness(cueAgreementTest);
+
+    //need to add padding to some containers if necessary: correctAll, timingAll, cueAgreement
+    if (correctAll.size() < 16)
+    {
+        int padSize = 16 - correctAll.size();
+        for (int a = 0; a < padSize; a++)
+        {
+            correctAll.push_back(-1);
+        }
+    }
+    if (timingAll.size() < 16)
+    {
+        int padSize = 16 - timingAll.size();
+        for (int a = 0; a < padSize; a++)
+        {
+            timingAll.push_back("null");
+        }
+    }
+    if (cueAgreement.size() < 16)
+    {
+        int padSize = 16 - cueAgreement.size();
+        for (int a = 0; a < padSize; a++)
+        {
+            cueAgreement.push_back(-1);
+        }
+    }
+
 
     // cout << endl;
     // cout << "Mean time of first four: \t" + Mean(timingTrain) + "\tSD: " + SD(timingTrain) << endl;
@@ -304,7 +337,16 @@ int main (int argc, char **argv)
             //if the file doesn't exist, then open, and write header
             cout << "Opening new file for results..." << endl;
             resultsFile.open(resultsFileName.c_str(), ios::out);
-            resultsFile << "ID,condition,TrainCorrect,TestCorrect,AllCorrect,TimeMeanTrain,TimeSDTrain,TimeMeanTest,TimeSDTest,TimeMeanAll,TimeSDAll,duration,testScore,story correctness,story 1,story 2,story 3,story 4,story 5,story 6,story 7,story 8,story 9,story 10,story 11,story 12,story 13,story 14,story 15,story 16,story presentation order,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,story timings,story 1,story 2,story 3,story 4,story 5,story 6,story 7,story 8,story 9,story 10,story 11,story 12,story 13,story 14,story 15,story 16,timings presentation order,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,AgreementTrain,AgreementTest,AgreementAll,story cue agreement,story 1,story 2,story 3,story 4,story 5,story 6,story 7,story 8,story 9,story 10,story 11,story 12,story 13,story 14,story 15,story 16,cue agreement presentation order,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16," << endl;
+            if (switchYears == 1)
+            {
+                //2018 data
+                resultsFile << "ID,condition,TrainCorrect,TestCorrect,AllCorrect,TimeMeanTrain,TimeSDTrain,TimeMeanTest,TimeSDTest,TimeMeanAll,TimeSDAll,duration,testScore,story correctness,story 1,story 2,story 3,story 4,story 5,story 6,story 7,story 8,story 9,story 10,story 11,story 12,story 13,story 14,story 15,story 16,story presentation order,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,story timings,story 1,story 2,story 3,story 4,story 5,story 6,story 7,story 8,story 9,story 10,story 11,story 12,story 13,story 14,story 15,story 16,timings presentation order,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,AgreementTrain,AgreementTest,AgreementAll,story cue agreement,story 1,story 2,story 3,story 4,story 5,story 6,story 7,story 8,story 9,story 10,story 11,story 12,story 13,story 14,story 15,story 16,cue agreement presentation order,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16," << endl;
+            }
+            else if (switchYears == 0)
+            {
+                //2017 data
+                resultsFile << "ID,TrainCorrect,TestCorrect,AllCorrect,TimeMeanTrain,TimeSDTrain,TimeMeanTest,TimeSDTest,TimeMeanAll,TimeSDAll,testScore,story correctness,story 1,story 2,story 3,story 4,story 5,story 6,story 7,story 8,story 9,story 10,story 11,story 12,story 13,story 14,story 15,story 16,story presentation order,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,story timings,story 1,story 2,story 3,story 4,story 5,story 6,story 7,story 8,story 9,story 10,story 11,story 12,story 13,story 14,story 15,story 16,timings presentation order,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16" << endl;
+            }
             resultsFile.flush();
         }
         else
@@ -321,14 +363,20 @@ int main (int argc, char **argv)
     resultsFile.exceptions(std::ios::goodbit);	//disable exception throwing
 
     resultsFile << participantID << ",";
-    resultsFile << condition << ",";
+    if (switchYears == 1)
+    {
+        resultsFile << condition << ",";
+    }
     resultsFile << correctnessTrain << ",";
     resultsFile << correctnessTest << ",";
     resultsFile << correctnessAll << ",";
     resultsFile << Mean(timingTrain) << "," << SD(timingTrain) << ",";
     resultsFile << Mean(timingTest) << "," << SD(timingTest) << ",";
     resultsFile << Mean(timingAll) << "," << SD(timingAll) << ",";
-    resultsFile << duration << ",",
+    if (switchYears == 1)
+    {
+        resultsFile << duration << ",";
+    }
     resultsFile << score << ",";
     resultsFile << ",";
     //the actual story correctness (*not* in order of presentation)
@@ -355,18 +403,21 @@ int main (int argc, char **argv)
         resultsFile << timingAll[a] << ",";
     }
     //now agreement stats for the gaze cueing
-    resultsFile << agreementTrain << ",";
-    resultsFile << agreementTest << ",";
-    resultsFile << agreementAll << ",";
-    resultsFile << ",";
-    for (int a = 0; a < (int)robotAgreement.size(); a++)
+    if (switchYears == 1)
     {
-        resultsFile << robotAgreement[a] << ",";
-    }
-    resultsFile << ",";
-    for (int a = 0; a < (int)cueAgreement.size(); a++)
-    {
-        resultsFile << cueAgreement[a] << ",";
+        resultsFile << agreementTrain << ",";
+        resultsFile << agreementTest << ",";
+        resultsFile << agreementAll << ",";
+        resultsFile << ",";
+        for (int a = 0; a < (int)robotAgreement.size(); a++)
+        {
+            resultsFile << robotAgreement[a] << ",";
+        }
+        resultsFile << ",";
+        for (int a = 0; a < (int)cueAgreement.size(); a++)
+        {
+            resultsFile << cueAgreement[a] << ",";
+        }
     }
 
     resultsFile << endl;
