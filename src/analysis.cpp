@@ -96,12 +96,15 @@ int main (int argc, char **argv)
     //throw away the second line, as this is data header
     getline(inFile, readIn);
 
-    //third line contains the start time stamp, want this...
-    getline(inFile, readIn);
-    vector<string> startTimeLine = Splitter(readIn, ',');
-    if((startTimeLine[0] == "event") && (startTimeLine.size() == 8))
+    if (switchYears == 1)
     {
-        startTime = startTimeLine[7];
+        //third line of 2018 logs contains the start time stamp, want this...
+        getline(inFile, readIn);
+        vector<string> startTimeLine = Splitter(readIn, ',');
+        if((startTimeLine[0] == "event") && (startTimeLine.size() == 8))
+        {
+            startTime = startTimeLine[7];
+        }
     }
 
     //the first four stories treated separately
@@ -340,7 +343,7 @@ int main (int argc, char **argv)
             if (switchYears == 1)
             {
                 //2018 data
-                resultsFile << "ID,condition,TrainCorrect,TestCorrect,AllCorrect,TimeMeanTrain,TimeSDTrain,TimeMeanTest,TimeSDTest,TimeMeanAll,TimeSDAll,duration,testScore,story correctness,story 1,story 2,story 3,story 4,story 5,story 6,story 7,story 8,story 9,story 10,story 11,story 12,story 13,story 14,story 15,story 16,story presentation order,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,story timings,story 1,story 2,story 3,story 4,story 5,story 6,story 7,story 8,story 9,story 10,story 11,story 12,story 13,story 14,story 15,story 16,timings presentation order,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,AgreementTrain,AgreementTest,AgreementAll,story cue agreement,story 1,story 2,story 3,story 4,story 5,story 6,story 7,story 8,story 9,story 10,story 11,story 12,story 13,story 14,story 15,story 16,cue agreement presentation order,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16," << endl;
+                resultsFile << "ID,condition,TrainCorrect,TestCorrect,AllCorrect,TimeMeanTrain,TimeSDTrain,TimeMeanTest,TimeSDTest,TimeMeanAll,TimeSDAll,startTimeStamp,duration,testScore,story correctness,story 1,story 2,story 3,story 4,story 5,story 6,story 7,story 8,story 9,story 10,story 11,story 12,story 13,story 14,story 15,story 16,story presentation order,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,story timings,story 1,story 2,story 3,story 4,story 5,story 6,story 7,story 8,story 9,story 10,story 11,story 12,story 13,story 14,story 15,story 16,timings presentation order,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,AgreementTrain,AgreementTest,AgreementAll,story cue agreement,story 1,story 2,story 3,story 4,story 5,story 6,story 7,story 8,story 9,story 10,story 11,story 12,story 13,story 14,story 15,story 16,cue agreement presentation order,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16," << endl;
             }
             else if (switchYears == 0)
             {
@@ -375,6 +378,7 @@ int main (int argc, char **argv)
     resultsFile << Mean(timingAll) << "," << SD(timingAll) << ",";
     if (switchYears == 1)
     {
+        resultsFile << startTime << ",";
         resultsFile << duration << ",";
     }
     resultsFile << score << ",";
